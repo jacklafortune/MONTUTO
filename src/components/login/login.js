@@ -11,7 +11,6 @@ export class Login extends Component {
 
     render() {
         return (
-
                 <View style={styles.container}>
                     <View style={styles.loginContainer}>
                         <Image resizeMode="contain" style={styles.logo} source={require('../../components/images/montuto_logo.png')} />
@@ -25,7 +24,7 @@ export class Login extends Component {
                         rounded
                         backgroundColor="#2B98F0"
                         buttonStyle={{marginBottom: 15}}
-                        onPress={() => this.props.navigation.navigate('Home_Login')}
+                        onPress={() => this.props.navigation.navigate('login_info')}
                     />
                     <Button
                         title='Create Account'
@@ -38,14 +37,11 @@ export class Login extends Component {
 
                  </View>
                     <View style={styles.text_wrap}>
-                        <Text style={styles.text_btn}>
+                        <Text style={styles.text_btn} onPress={() => this.props.navigation.navigate('Tutor_SignUp')}>
                             Become a tutor
                         </Text>
                     </View>
                 </View>
-
-
-
         );
     }
 }

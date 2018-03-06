@@ -127,7 +127,7 @@ export class Login_Info extends Component {
         GoogleSignin.signIn()
             .then((data) => {
                 const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
-                return firebase.auth().signInWithCredential(credential);
+                return firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
             })
             .done();

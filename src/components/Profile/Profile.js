@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import { View, Image, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import { Button, Text, Avatar, Card, Icon } from 'react-native-elements';
-import {StackNavigator} from 'react-navigation';
+import {StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import StarRating from 'react-native-star-rating';
+import firebase from 'react-native-firebase';
 
 
 //FB SDK
@@ -18,19 +19,19 @@ export class Profile extends Component {
  /**
   * FBSDK Graph API
   *
-  * - To change Graph params update GraphRequest fields
+  * - To change Graph params update GraphRequest fields /me?...
   * - Permissions are requested in Login_Info.js inside LoginButton readPermissions array
   */
 
     _responseInfoCallback = (error, result) => {
         if (error) {
-            alert('Error fetching data: ' + error.toString());
+            console.log("FB SDK error  " + error.toString());
         } else {
             this.setState({name: result.name, pic: result.picture.data.url});
         }
     };
 
-    componentWillMount(){
+    componentDidMount(){
         const infoRequest = new GraphRequest(
             '/me?fields=name,picture',
             null,
@@ -38,7 +39,14 @@ export class Profile extends Component {
         );
 
         new GraphRequestManager().addRequest(infoRequest).start();
+
+        this.googleUserData();
     }
+
+
+
+
+
 
 
     constructor(props) {
@@ -52,7 +60,7 @@ export class Profile extends Component {
 
 
     static navigationOptions = {
-      title: 'Find Tutor'
+      drawerLabel: 'Profile',
     };
 
 
@@ -126,11 +134,22 @@ export class Profile extends Component {
             </View>
         );
     }
+
+    //Firebase Google User data fetch
+    googleUserData(){
+        let user = firebase.auth().currentUser;
+        if (user != null){
+            this.setState({name: user.displayName, pic: user.photoURL})
+        }
+    }
+
 }
+
+
 
 const styles = StyleSheet.create({
    container: {
-       backgroundColor: '#F7FDFE',
+
        padding: 10,
        marginTop:10,
        flex: 1,
