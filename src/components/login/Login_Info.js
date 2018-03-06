@@ -1,15 +1,20 @@
 import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet} from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import firebase from 'react-native-firebase';
 
 //FB SDK
 const FBSDK = require('react-native-fbsdk');
 const {
     LoginButton,
+    AccessToken
 } = FBSDK;
 
 
+
 export class Login_Info extends Component {
+
     static navigationOptions = {
       title: 'Home_Login',
         headerStyle: {
@@ -19,13 +24,20 @@ export class Login_Info extends Component {
 
     constructor(props){
         super(props);
-        this.state={
-            text: ''
+        this.state= {
+            text: '',
+            user: ''
         };
     }
 
+    componentDidMount(){
+        this._setupGoogle();
+    }
+
+
 
     render(){
+
         return(
             <View style={{flex: 1, flexDirection: 'column', backgroundColor: '#fff'}}>
             <View style={styles.container}>
@@ -58,20 +70,24 @@ export class Login_Info extends Component {
                                 } else if (result.isCancelled) {
                                     alert("Login was cancelled");
                                 } else {
-                                    alert("Login was successful with permissions: " + result.grantedPermissions)
-                                    this.props.navigation.navigate("Profile");
+                                    alert("Login was successful with permissions: " + result.grantedPermissions);
+                                    AccessToken.getCurrentAccessToken().then(
+                                        (data) => {
+                                            this.props.navigation.navigate("Profile");
+
+                                        }
+                                    )
                                 }
                             }
                         }
                         onLogoutFinished={() => alert("User logged out")}
                     />
 
-                    <Button
-                        title="Google"
-                        icon={{name: 'google', type: 'font-awesome'}}
-                        rounded
-                        large
-                        backgroundColor="#ED312B"
+                    <GoogleSigninButton
+                        style={{width: 230, height: 48}}
+                        size={GoogleSigninButton.Size.Standard}
+                        color={GoogleSigninButton.Color.Light}
+                        onPress={() => {this._signIn()}}
                     />
                 </View>
                 <View style={{alignItems: 'center', marginBottom: 20}}>
@@ -92,7 +108,40 @@ export class Login_Info extends Component {
 
         );
     }
+
+
+    async _setupGoogle(){
+        try {
+            await GoogleSignin.hasPlayServices({autoResolve: true});
+            await GoogleSignin.configure({});
+
+            const user = await GoogleSignin.currentUserAsync();
+            this.setState({user})
+        }
+        catch (err) {
+            console.log("play services error", err.code, err.message);
+        }
+    }
+
+    _signIn(){
+        GoogleSignin.signIn()
+            .then((data) => {
+                const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
+                return firebase.auth().signInWithCredential(credential);
+
+            })
+            .done();
+    }
+
+    _signOut(){
+        GoogleSignin.revokeAccess().then(() => GoogleSignin.signOut()).then (() => {
+            this.setState({user: null});
+        })
+            .done();
+    }
 }
+
+
 
 const styles = StyleSheet.create({
    container: {

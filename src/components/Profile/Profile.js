@@ -13,51 +13,40 @@ const {
     GraphRequestManager,
 } = FBSDK;
 
-
-//FBSDK Graph Request
-const responseCallback = ((error, result) => {
-    if (error) {
-        response.ok = false;
-        response.error = error;
-        return (response)
-    } else {
-        response.ok = true;
-        response.json = result;
-        return(response)
-    }
-});
-
-const profileRequestParams = {
-    fields: {
-        string: 'id, name, email, first_name, last_name, gender'
-    }
-};
-
-const profileRequestConfig = {
-    httpMethod: 'GET',
-    version: 'v2.5',
-    parameters: profileRequestParams,
-    accessToken: token.toString()
-};
-
-const profileRequest = new GraphRequest(
-    '/me',
-    profileRequestConfig,
-    responseCallback,
-);
-
-//start of graph request
-new GraphRequestManager().addRequest(profileRequest).start();
-
-
-
-
-
 export class Profile extends Component {
+
+ /**
+  * FBSDK Graph API
+  *
+  * - To change Graph params update GraphRequest fields
+  * - Permissions are requested in Login_Info.js inside LoginButton readPermissions array
+  */
+
+    _responseInfoCallback = (error, result) => {
+        if (error) {
+            alert('Error fetching data: ' + error.toString());
+        } else {
+            this.setState({name: result.name, pic: result.picture.data.url});
+        }
+    };
+
+    componentWillMount(){
+        const infoRequest = new GraphRequest(
+            '/me?fields=name,picture',
+            null,
+            this._responseInfoCallback
+        );
+
+        new GraphRequestManager().addRequest(infoRequest).start();
+    }
+
+
     constructor(props) {
         super(props);
         this.state = {
-            starCount: 4.5
+            starCount: 4.5,
+            name:'',
+            pic: ''
         };
     }
 
@@ -71,12 +60,10 @@ export class Profile extends Component {
     render(){
         return(
             <View style={styles.container}>
-
                 {/* Profile info section*/}
-
                 <Grid>
                     <Col size={60}>
-                        <Text h3>Alex Sagel</Text>
+                        <Text h3>{this.state.name}</Text>
                         <Text style={{color: '#bdbdbd'}}>Computer Science tutor</Text>
 
                         <View style={styles.starContainer}>
@@ -111,9 +98,7 @@ export class Profile extends Component {
                                     backgroundColor:'#2B98F0',
                                     borderRadius:100,
                                     marginTop: 2.5,
-                                }}
-
-                            >
+                                }}>
                                 <Icon
                                     name='play-arrow'
                                     color='white'
@@ -125,14 +110,15 @@ export class Profile extends Component {
                         <Avatar
                             xlarge
                             rounded
-                            source={{uri: 'https://picsum.photos/300'}}
+                            source={{uri:this.state.pic}}
                             containerStyle={{marginRight: 5}}
                         />
                     </Col>
                 </Grid>
 
                 {/* Skills card*/}
-                <Card title='Skills'>
+                <Card
+                    title='Skills'>
                     <Text style={{marginBottom: 10}}>
                         Testing this react thingy
                     </Text>

@@ -5,17 +5,16 @@ import { Login }  from './src/components/login/login';
 import { StackNavigator } from 'react-navigation';
 import { Login_Info } from "./src/components/login/Login_Info";
 import {Profile} from "./src/components/Profile/Profile";
+import firebase from 'react-native-firebase';
 
- /* export default class App extends React.Component{
-  render(){
-    return(
-        <Login_Info />
-    )
-  }
-} */
+/**
+ * Navigation
+ *
+ * To add another screen to StackNavigator simply create object with component name and import component
+ *
+ */
 
-
- const RootStack = StackNavigator(
+  const RootStack = StackNavigator(
     {
         Home: {
             screen: Login,
@@ -27,12 +26,53 @@ import {Profile} from "./src/components/Profile/Profile";
             screen: Profile,
         }
     }, {
-        initialRouteName: 'Profile',
+        initialRouteName: 'Home_Login',
     }
 );
 
-export default class App extends React.Component {
+
+  /* export default class App extends React.Component{
+ render(){
+   return(
+       <RootStack />
+   )
+ }
+} */
+
+   export default class App extends React.Component {
+
+    constructor(){
+        super();
+
+        this.state = {
+            loading: true,
+        };
+    }
+
+
+
+    componentDidMount(){
+        this.authSubscription =
+            firebase.auth().onAuthStateChanged((user) => {
+                this.setState({
+                    loading: false,
+                    user,
+                });
+            });
+    }
+
+    componentWillUnmount(){
+        this.authSubscription();
+    }
+
     render(){
-        return <RootStack />;
+          if (this.state.loading){
+            return null;
+        } else if (this.state.user){
+            return <Profile />;
+        } else {
+            return <Login_Info />
+        }
+
     }
 }

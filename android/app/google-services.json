@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "398971555061",
+    "firebase_url": "https://montuto-6f5c3.firebaseio.com",
+    "project_id": "montuto-6f5c3",
+    "storage_bucket": "montuto-6f5c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398971555061:android:abd34371439647af",
+        "android_client_info": {
+          "package_name": "com.montutoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398971555061-52985qlm7sl00gl8lq19om5l2144omk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCblKw95ieUqv4XSSFkZ0vYo-eEEtY6CrY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
