@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet} from 'react-native';
-import { FormLabel, FormInput, Button } from 'react-native-elements';
+import { FormInput, Button } from 'react-native-elements';
 import { GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
+
 
 //FB SDK
 const FBSDK = require('react-native-fbsdk');
 const {
     LoginButton,
-    AccessToken
+    AccessToken,
 } = FBSDK;
 
 
@@ -19,13 +20,15 @@ export class Login_Info extends Component {
       title: 'Home_Login',
         headerStyle: {
           backgroundColor: '#fff'
-        }
+        },
+        headerMode:'float'
     };
 
     constructor(props){
         super(props);
         this.state= {
-            text: '',
+            email: '',
+            pass: '',
             user: ''
         };
     }
@@ -46,22 +49,22 @@ export class Login_Info extends Component {
                 </View>
 
                 <View style={styles.formGroup}>
-                    <FormInput onChangeText={(text) => this.setState({text})}
-                               value={this.state.text}
+                    <FormInput onChangeText={(email) => this.setState({email: email})}
+                               value={this.state.email}
                                placeholder="Your email"
                     />
 
-                    <FormInput onChangeText={(text) => this.setState({text})}
-                               value={this.state.text}
+                    <FormInput onChangeText={(pass) => this.setState({pass: pass})}
+                               value={this.state.pass}
                                placeholder="Password"
                     />
                 </View>
-                <View style={{alignItems:'center', marginBottom: 15, }}>
+                <View style={{alignItems:'center', marginBottom: 20, marginTop: 10}}>
                     <Text style={{color: '#bdbdbd'}}>Or, login with</Text>
                 </View>
 
                 <View style={styles.btn_group}>
-                    <LoginButton
+                     <LoginButton
                         readPermissions={["public_profile email"]}
                         onLoginFinished={
                             (error, result) => {
@@ -73,8 +76,9 @@ export class Login_Info extends Component {
                                     alert("Login was successful with permissions: " + result.grantedPermissions);
                                     AccessToken.getCurrentAccessToken().then(
                                         (data) => {
-                                            this.props.navigation.navigate("Profile");
-
+                                            const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
+                                            const currentUser = firebase.auth().signInAndRetrieveDataWithCredential(credential)
+                                            .then(() => this.props.navigation.navigate('profile'));
                                         }
                                     )
                                 }
@@ -93,7 +97,7 @@ export class Login_Info extends Component {
                 <View style={{alignItems: 'center', marginBottom: 20}}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{color: '#bdbdbd'}}>Not registered yet?</Text>
-                        <Text style={{color:'#add8e6'}}> Sign up now</Text>
+                        <Text style={{color:'#add8e6'}} onPress={() => this.props.navigation.navigate('signUp')}> Sign up now</Text>
                     </View>
                 </View>
 
@@ -103,6 +107,7 @@ export class Login_Info extends Component {
                     backgroundColor="#2B98F0"
                     buttonStyle={{height: 70, marginBottom: 5}}
                     fontSize={20}
+                    onPress={() => this.onRegister()}
                 />
             </View>
 
@@ -123,6 +128,8 @@ export class Login_Info extends Component {
         }
     }
 
+
+
     _signIn(){
         GoogleSignin.signIn()
             .then((data) => {
@@ -139,7 +146,12 @@ export class Login_Info extends Component {
         })
             .done();
     }
+
+    //Firebase email & pass registration
+
+
 }
+
 
 
 

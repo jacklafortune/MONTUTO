@@ -16,6 +16,12 @@ const {
 
 export class Profile extends Component {
 
+    getFirebaseProfile = () => {
+      let user = firebase.auth().currentUser;
+
+      componentWillRecieveProps()
+    };
+
  /**
   * FBSDK Graph API
   *

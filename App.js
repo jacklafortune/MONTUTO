@@ -8,6 +8,7 @@ import { Login_Info } from "./src/components/login/Login_Info";
 import {Tutor_SignUp} from './src/components/Tutor/Tutor_SignUp';
 import {Profile} from "./src/components/Profile/Profile";
 import firebase from 'react-native-firebase';
+import {SignUp} from "./src/components/login/SignUp";
 
 /**
  * Navigation
@@ -16,12 +17,18 @@ import firebase from 'react-native-firebase';
  *
  */
 
+
+
 const LoginStack = StackNavigator({
         loginScreen: {screen: Login},
         login_info: {screen: Login_Info},
+        signUp: {screen: SignUp},
+        tutorSignUp: {screen: Tutor_SignUp}
+
     },
     {
-        headerMode: 'none',
+
+        initialRouteName: 'signUp',
     });
 
 
@@ -61,7 +68,7 @@ const DrawerNavigation = StackNavigator({
             screen: Tutor_SignUp,
         }
     }, {
-        initialRouteName: 'Home',
+        initialRouteName: 'home_Login',
     },
 
 );
@@ -84,6 +91,7 @@ const DrawerNavigation = StackNavigator({
 
         this.state = {
             loading: true,
+            user: ''
         };
     }
 
@@ -111,6 +119,5 @@ const DrawerNavigation = StackNavigator({
         } else {
             return <LoginStack />
         }
-
     }
 }

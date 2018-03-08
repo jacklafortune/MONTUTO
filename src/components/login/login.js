@@ -5,8 +5,8 @@ import {StackNavigator} from 'react-navigation';
 
 
 export class Login extends Component {
-    static navigationOptions ={
-      title: 'Home'
+    static navigationOptions = {
+       header: null
     };
 
     render() {
@@ -33,11 +33,12 @@ export class Login extends Component {
                         outline
                         color="#2B98F0"
                         buttonStyle={{marginBottom: 20}}
+                        onPress={() => this.props.navigation.navigate('signUp')}
                     />
 
                  </View>
                     <View style={styles.text_wrap}>
-                        <Text style={styles.text_btn} onPress={() => this.props.navigation.navigate('Tutor_SignUp')}>
+                        <Text style={styles.text_btn} onPress={() => this.props.navigation.navigate('tutorSignUp')}>
                             Become a tutor
                         </Text>
                     </View>
