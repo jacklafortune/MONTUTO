@@ -7,7 +7,7 @@ import firebase from 'react-native-firebase';
 export class SignUp extends Component {
 
 
-    //From validation
+    //From validation logic
     handleSubmit = () => {
 
         if (this.state.name.length > 1){
@@ -53,16 +53,24 @@ export class SignUp extends Component {
 
         if (this.state.nameCheck && this.state.passCheck && this.state.emailCheck && this.state.passConfirmCheck === true){
             //All Good!
-            firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass)
-                .then((user) => {
-                        user = firebase.auth().currentUser;
-                        this.props.navigation.navigate('DrawerStack');
-                    }
-                );
+            firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass).done();
 
+
+            //Todo: fix updateProfile bug
+            this.authSubscription =
+                firebase.auth().onAuthStateChanged((user) => {
+                    user = firebase.auth().currentUser;
+                    user.updateProfile({
+                        displayName: this.state.name
+                    }).done()
+                });
+            this.props.navigation.navigate('drawerStack')
         }
 
+
     };
+
+
 
     static navigationOptions = {
         title: "Sign Up",
@@ -90,6 +98,8 @@ export class SignUp extends Component {
             passConfirmError: '',
         }
     }
+
+
 
 
 

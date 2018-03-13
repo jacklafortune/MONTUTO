@@ -16,6 +16,8 @@ const {
 
 export class Login_Info extends Component {
 
+
+
     static navigationOptions = {
       title: 'Home_Login',
         headerStyle: {
@@ -34,9 +36,9 @@ export class Login_Info extends Component {
     }
 
     componentDidMount(){
+        console.disableYellowBox = true;
         this._setupGoogle();
     }
-
 
 
     render(){
@@ -57,6 +59,8 @@ export class Login_Info extends Component {
                     <FormInput onChangeText={(pass) => this.setState({pass: pass})}
                                value={this.state.pass}
                                placeholder="Password"
+                               autoCorrect={false}
+                               secureTextEntry={true}
                     />
                 </View>
                 <View style={{alignItems:'center', marginBottom: 20, marginTop: 10}}>
@@ -78,7 +82,7 @@ export class Login_Info extends Component {
                                         (data) => {
                                             const credential = firebase.auth.FacebookAuthProvider.credential(data.accessToken);
                                             const currentUser = firebase.auth().signInAndRetrieveDataWithCredential(credential)
-                                            .then(() => this.props.navigation.navigate('profile'));
+                                            .then(() => this.props.navigation.navigate('Profile'));
                                         }
                                     )
                                 }
@@ -107,7 +111,7 @@ export class Login_Info extends Component {
                     backgroundColor="#2B98F0"
                     buttonStyle={{height: 70, marginBottom: 5}}
                     fontSize={20}
-                    onPress={() => this.onRegister()}
+                    onPress={() => this.firebaseSignIn()}
                 />
             </View>
 
@@ -137,7 +141,7 @@ export class Login_Info extends Component {
                 return firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
             })
-            .done();
+            .done().then(this.props.navigation.navigate('drawerStack'));
     }
 
     _signOut(){
@@ -147,8 +151,18 @@ export class Login_Info extends Component {
             .done();
     }
 
-    //Firebase email & pass registration
+    //Firebase email & pass signIn
+    //Todo: fix weird redirect after successful log in
+    firebaseSignIn = () => {
+        firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass).then(
+            user => {
+                console.log(user);
 
+            }
+        ).done();
+        this.props.navigation.navigate('profile');
+        console.log('logged in')
+    }
 
 }
 

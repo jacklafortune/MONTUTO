@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import { View, Image, StyleSheet, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
+import { View, Image, StyleSheet, KeyboardAvoidingView, TouchableOpacity, ScrollView} from 'react-native';
 import { Button, Text, Avatar, Card, Icon } from 'react-native-elements';
 import {StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import StarRating from 'react-native-star-rating';
 import firebase from 'react-native-firebase';
-
+import ReviewCard from '../Profile/reviewCard'
 
 //FB SDK
 const FBSDK = require('react-native-fbsdk');
@@ -16,11 +16,7 @@ const {
 
 export class Profile extends Component {
 
-    getFirebaseProfile = () => {
-      let user = firebase.auth().currentUser;
 
-      componentWillRecieveProps()
-    };
 
  /**
   * FBSDK Graph API
@@ -38,6 +34,7 @@ export class Profile extends Component {
     };
 
     componentDidMount(){
+        console.disableYellowBox = true;
         const infoRequest = new GraphRequest(
             '/me?fields=name,picture',
             null,
@@ -48,12 +45,6 @@ export class Profile extends Component {
 
         this.googleUserData();
     }
-
-
-
-
-
-
 
     constructor(props) {
         super(props);
@@ -73,19 +64,20 @@ export class Profile extends Component {
 
     render(){
         return(
+            <ScrollView>
             <View style={styles.container}>
                 {/* Profile info section*/}
                 <Grid>
                     <Col size={60}>
-                        <Text h3>{this.state.name}</Text>
-                        <Text style={{color: '#bdbdbd'}}>Computer Science tutor</Text>
+                        <Text style={styles.name}>{this.state.name}</Text>
+                        <Text style={{color: '#bdbdbd', marginLeft: 3}}>Computer Science tutor</Text>
 
                         <View style={styles.starContainer}>
                             <StarRating
                                 disabled={false}
                                 maxStars={5}
                                 rating={this.state.starCount}
-                                fullStarColor={'yellow'}
+                                fullStarColor={'#e6e600'}
                                 starSize={30}
                                 fullStar={'ios-star'}
                                 halfStar={'ios-star-half'}
@@ -125,19 +117,72 @@ export class Profile extends Component {
                             xlarge
                             rounded
                             source={{uri:this.state.pic}}
-                            containerStyle={{marginRight: 5}}
+                            containerStyle={{marginRight: 5, marginTop: 10}}
                         />
                     </Col>
                 </Grid>
 
                 {/* Skills card*/}
-                <Card
-                    title='Skills'>
-                    <Text style={{marginBottom: 10}}>
-                        Testing this react thingy
+                <Card style={{marginBottom: 10}}>
+                    <Text style={styles.cardTitle}>
+                       Skills
+                    </Text>
+                    <Text style={styles.cardText}>
+                        Data structures & algorithms, Java, C, Linear Algebra
                     </Text>
                 </Card>
+
+                {/* About me*/}
+                <Card style={{marginBottom: 10}}>
+                    <Text style={styles.cardTitle}>
+                        About me
+                    </Text>
+                    <Text style={styles.cardText}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                        dolore magna aliqua. Viverra maecenas accumsan lacus vel facilisis.
+                        Ullamcorper a lacus vestibulum sed.
+                    </Text>
+                </Card>
+
+                {/* Availability */}
+                <Card>
+                    <Text style={styles.cardTitle}>Availability</Text>
+                    <View style={styles.gridList}>
+                        <View style={styles.blockFill}>
+                            <Text style={{color: '#fff'}}>Mon</Text>
+                        </View>
+                        <View style={styles.block}>
+                            <Text>Tue</Text>
+                        </View>
+                        <View style={styles.blockFill}>
+                            <Text style={{color: '#fff'}}>Wed</Text>
+                        </View>
+                        <View style={styles.blockFill}>
+                            <Text style={{color: '#fff'}}>Thu</Text>
+                        </View>
+                        <View style={styles.block}>
+                            <Text>Fri</Text>
+                        </View>
+                        <View style={styles.block}>
+                            <Text>Sat</Text>
+                        </View>
+                        <View style={styles.block}>
+                            <Text>Sun</Text>
+                        </View>
+                    </View>
+                </Card>
+
+                {/* Reviews */}
+                <Card>
+                    <Text style={styles.cardTitle}>Reviews</Text>
+                    <View>
+                        <ReviewCard name='Steven Marcus' starCount={3} timestamp='2h ago'/>
+                        <ReviewCard name='Mark Marcusson' starCount={5} timestamp='6h ago'/>
+                        <ReviewCard name='George Neery' starCount={4} timestamp='Dec 12, 2017'/>
+                    </View>
+                </Card>
             </View>
+            </ScrollView>
         );
     }
 
@@ -145,8 +190,13 @@ export class Profile extends Component {
     googleUserData(){
         let user = firebase.auth().currentUser;
         if (user != null){
-            this.setState({name: user.displayName, pic: user.photoURL})
+            this.setState({name: user.displayName, pic: user.photoURL});
+            console.log('grabbed google data!')
         }
+    }
+
+    signOut(){
+        firebase.auth().signOut().then(this.props.navigation.navigate('loginStack'));
     }
 
 }
@@ -155,12 +205,18 @@ export class Profile extends Component {
 
 const styles = StyleSheet.create({
    container: {
-
+       backgroundColor: '#fff',
        padding: 10,
-       marginTop:10,
+
        flex: 1,
        flexDirection: 'column'
    },
+    name: {
+        marginLeft: 3,
+        fontSize: 32,
+        fontWeight: "400",
+
+    },
     starContainer: {
         marginTop: 15,
         flexDirection: 'row',
@@ -169,5 +225,41 @@ const styles = StyleSheet.create({
     contact_btn_wrap: {
         flexDirection: 'row',
         marginTop: 15,
+        marginLeft: 0,
     },
+    cardTitle: {
+       marginBottom: 8,
+        color: '#75BDE4',
+        fontWeight: 'bold',
+        fontSize: 17
+    },
+    cardText: {
+       fontSize: 15,
+        color: '#848484'
+    },
+    gridList: {
+       flexDirection: 'row',
+    },
+    blockFill: {
+        width: 40,
+        height: 40,
+        backgroundColor: '#57C3F4',
+        borderRadius: 5,
+        borderWidth: .3,
+        borderColor: '#dadada',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 7,
+    },
+    block: {
+        width: 40,
+        height: 40,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        borderWidth: .3,
+        borderColor: '#dadada',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 7
+    }
 });

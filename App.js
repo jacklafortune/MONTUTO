@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {Icon} from 'react-native-elements';
+import {Icon, Header} from 'react-native-elements';
 import { Login }  from './src/components/login/login';
 import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import { Login_Info } from "./src/components/login/Login_Info";
@@ -16,21 +16,18 @@ import {SignUp} from "./src/components/login/SignUp";
  * To add another screen to StackNavigator simply create object with component name and import component
  *
  */
-
-
-
 const LoginStack = StackNavigator({
         loginScreen: {screen: Login},
         login_info: {screen: Login_Info},
         signUp: {screen: SignUp},
-        tutorSignUp: {screen: Tutor_SignUp}
+        tutorSignUp: {screen: Tutor_SignUp},
+        profile: {screen: Profile}
 
     },
     {
 
-        initialRouteName: 'signUp',
+        // initialRouteName: 'signUp',
     });
-
 
 const DrawerStack = DrawerNavigator({
     profile: {screen: Profile},
@@ -45,13 +42,25 @@ const DrawerNavigation = StackNavigator({
     navigationOptions: ({navigation}) => ({
         headerLeft: <Icon
             onPress={() => navigation.navigate('DrawerOpen')}
-            name='dehaze'
+            name='menu'
+            style={{paddingLeft: 5}}
         >
-        </Icon>,
-        headerTitle: 'Menu'
+        </Icon>
+
     })
 
 });
+
+const PrimaryNav = StackNavigator({
+    loginStack: {screen: LoginStack},
+    drawerStack: {screen: DrawerNavigation}
+},
+    {
+        headerMode: 'none',
+        initialRouteName: 'drawerStack'
+    }
+    );
+
 
   const RootStack = StackNavigator(
     {
@@ -68,7 +77,7 @@ const DrawerNavigation = StackNavigator({
             screen: Tutor_SignUp,
         }
     }, {
-        initialRouteName: 'home_Login',
+        initialRouteName: 'Profile',
     },
 
 );
@@ -76,22 +85,23 @@ const DrawerNavigation = StackNavigator({
 
 
 
- /*  export default class App extends React.Component{
+   export default class App extends React.Component{
+
  render(){
    return(
-       <RootStack />
+       <DrawerNavigation />
    )
  }
-} */
+}
 
-   export default class App extends React.Component {
+  /* export default class App extends React.Component {
 
     constructor(){
         super();
 
         this.state = {
             loading: true,
-            user: ''
+
         };
     }
 
@@ -107,17 +117,19 @@ const DrawerNavigation = StackNavigator({
             });
     }
 
-    componentWillUnmount(){
-        this.authSubscription();
-    }
+
+       componentWillUnmount(){
+           this.authSubscription();
+       }
+
 
     render(){
           if (this.state.loading){
             return null;
-        } else if (this.state.user){
-            return <DrawerNavigation />;
+        }  if (this.state.user){
+            return <PrimaryNav />;
         } else {
             return <LoginStack />
         }
     }
-}
+} */
