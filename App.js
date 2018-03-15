@@ -34,6 +34,7 @@ const DrawerStack = DrawerNavigator({
     tutorPage: {screen: TutorPage},
     profile: {screen: Profile},
 
+
 });
 
 
@@ -44,13 +45,13 @@ const DrawerNavigation = StackNavigator({
 }, {
     headerMode: 'float',
     navigationOptions: ({navigation}) => ({
-        headerLeft: <Icon
-            onPress={() => navigation.navigate('DrawerOpen')}
-            name='menu'
-
-        >
-        </Icon>
-
+        headerLeft:
+            <View style={{marginLeft: 15}}>
+                <Icon
+                onPress={() => navigation.navigate('DrawerOpen')}
+                name='menu'>
+                    </Icon>
+            </View>
     })
 
 });
@@ -81,7 +82,7 @@ const PrimaryNav = StackNavigator({
             screen: Tutor_SignUp,
         }
     }, {
-        initialRouteName: 'Profile',
+        initialRouteName: 'home_Login',
     },
 
 );

@@ -73,30 +73,36 @@ export class TutorPage extends Component {
                 <Text style={styles.cardTitle}>Browse tutors</Text>
                 <ScrollView>
                     <View>
-                            <List containerStyle={{borderWidth: 0, marginTop: 10, marginBottom: 5}}>
+                            <List containerStyle={{borderWidth: 0, marginTop: 5, marginBottom: 5, borderBottomWidth: 0, borderTopWidth: 0}}>
                                 <ListItem
                                 leftIcon={{name: 'flask', type: 'font-awesome'}}
                                 title='Science'
+                                containerStyle={styles.listStyle}
                                 />
                                 <ListItem
                                     leftIcon={{name: 'calculator', type: 'font-awesome'}}
                                     title='Math'
+                                    containerStyle={styles.listStyle}
                                 />
                                 <ListItem
                                     leftIcon={{name: 'pencil', type: 'font-awesome'}}
                                     title='English'
+                                    containerStyle={styles.listStyle}
                                 />
                                 <ListItem
                                     leftIcon={{name: 'music', type: 'font-awesome'}}
                                     title='Music'
+                                    containerStyle={styles.listStyle}
                                 />
                                 <ListItem
                                     leftIcon={{name: 'globe', type: 'font-awesome'}}
                                     title='Geography'
+                                    containerStyle={styles.listStyle}
                                 />
                                 <ListItem
                                     leftIcon={{name: 'users', type: 'font-awesome'}}
                                     title='Browse all'
+                                    containerStyle={styles.listStyle}
                                 />
                             </List>
 
@@ -123,7 +129,12 @@ const styles = StyleSheet.create({
        marginTop: 10,
         color: '#75BDE4',
         fontWeight: 'bold',
-        fontSize: 17
+        fontSize: 18,
+        marginLeft: 5,
     },
+    listStyle: {
+        borderBottomWidth: 0,
+        borderTopWidth: 0,
+    }
 });
 

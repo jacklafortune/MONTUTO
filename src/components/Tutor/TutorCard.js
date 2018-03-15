@@ -24,6 +24,7 @@ export class TutorCard extends Component {
                         startingValue={this.props.starValue}
                         imageSize={16}
                         ratingBackgroundColor="#a6a6a6s"
+                        readonly
                     />
 
                 </View>

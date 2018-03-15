@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, Image, StyleSheet, KeyboardAvoidingView, TouchableOpacity, ScrollView} from 'react-native';
-import { Button, Text, Avatar, Card, Icon } from 'react-native-elements';
+import { Button, Text, Avatar, Card, Icon, Rating } from 'react-native-elements';
 import {StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import StarRating from 'react-native-star-rating';
@@ -36,7 +36,7 @@ export class Profile extends Component {
     componentDidMount(){
         console.disableYellowBox = true;
         const infoRequest = new GraphRequest(
-            '/me?fields=name,picture',
+            '/me?fields=name,picture?',
             null,
             this._responseInfoCallback
         );
@@ -49,9 +49,10 @@ export class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            starCount: 4.5,
+            starCount: 4,
             name:'',
-            pic: ''
+            pic: '',
+            ratingCount: 23
         };
     }
 
@@ -69,22 +70,21 @@ export class Profile extends Component {
                 {/* Profile info section*/}
                 <Grid>
                     <Col size={60}>
-                        <Text style={styles.name}>{this.state.name}</Text>
-                        <Text style={{color: '#bdbdbd', marginLeft: 3}}>Computer Science tutor</Text>
+                        <View style={{marginLeft: 15}}>
+                            <Text style={styles.name}>{this.state.name}</Text>
+                            <Text style={{color: '#bdbdbd', marginLeft: 3, fontSize: 15}}>Computer Science tutor</Text>
 
-                        <View style={styles.starContainer}>
-                            <StarRating
-                                disabled={false}
-                                maxStars={5}
-                                rating={this.state.starCount}
-                                fullStarColor={'#e6e600'}
-                                starSize={30}
-                                fullStar={'ios-star'}
-                                halfStar={'ios-star-half'}
-                                emptyStar={'ios-star-outline'}
-                                iconSet={'Ionicons'}
-                            />
-                            <Text style={{marginLeft: 7.5, marginTop: 10}}>{this.state.starCount}</Text>
+                            <View style={styles.starContainer}>
+                                <Rating
+                                    type="star"
+                                    ratingCount={5}
+                                    startingValue={this.state.starCount}
+                                    imageSize={25}
+                                    ratingBackgroundColor="#a6a6a6s"
+                                    readonly
+                                />
+                                <Text style={{marginLeft: 7.5, marginTop: 2.5, fontSize: 17, color: '#bdbdbd'}}>{this.state.ratingCount}</Text>
+                        </View>
                         </View>
                         <View style={styles.contact_btn_wrap}>
                             <Button
@@ -123,7 +123,7 @@ export class Profile extends Component {
                 </Grid>
 
                 {/* Skills card*/}
-                <Card style={{marginBottom: 10}}>
+                <Card containerStyle={styles.cardStyle}>
                     <Text style={styles.cardTitle}>
                        Skills
                     </Text>
@@ -133,7 +133,7 @@ export class Profile extends Component {
                 </Card>
 
                 {/* About me*/}
-                <Card style={{marginBottom: 10}}>
+                <Card containerStyle={styles.cardStyle}>
                     <Text style={styles.cardTitle}>
                         About me
                     </Text>
@@ -145,7 +145,7 @@ export class Profile extends Component {
                 </Card>
 
                 {/* Availability */}
-                <Card>
+                <Card containerStyle={styles.cardStyle}>
                     <Text style={styles.cardTitle}>Availability</Text>
                     <View style={styles.gridList}>
                         <View style={styles.blockFill}>
@@ -172,11 +172,8 @@ export class Profile extends Component {
                     </View>
                 </Card>
 
-                {/* Reviews
-
-
-                */}
-                <Card>
+                {/* Reviews  */}
+                <Card containerStyle={styles.cardStyle}>
                     <Text style={styles.cardTitle}>Reviews</Text>
                     <View>
                         <ReviewCard name='Steven Marcus' starCount={3} timestamp='2h ago'/>
@@ -263,5 +260,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 7
+    },
+
+    /**
+     * ATTN: Shadow params are IOS only as of V0.54
+     * Only elevation works on Android
+     */
+    cardStyle: {
+        borderWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 2.5,
+        borderRadius: 5,
     }
 });
