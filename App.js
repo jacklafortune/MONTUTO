@@ -47,7 +47,7 @@ const DrawerNavigation = StackNavigator({
         headerLeft: <Icon
             onPress={() => navigation.navigate('DrawerOpen')}
             name='menu'
-            style={{paddingLeft: 5}}
+
         >
         </Icon>
 

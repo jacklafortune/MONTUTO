@@ -8,7 +8,12 @@ import {TutorCard} from "./TutorCard";
 export class TutorPage extends Component {
 
     static navigationOptions = {
-        title: 'Tutors',
+        drawerLabel: 'Find Tutors',
+        drawerIcon: () => (
+            <Icon
+                name='search'
+            />
+        )
     };
 
     constructor(props){
@@ -36,8 +41,9 @@ export class TutorPage extends Component {
                         />
                     </View>
                 {/* Tutor cards */}
-
+                <View style={{height: 190}}>
                     <Grid>
+
                         <Col size={33}>
                        <TutorCard
                         tutorName='Max Maxwell'
@@ -59,14 +65,15 @@ export class TutorPage extends Component {
                                 starValue={4.2}
                             />
                         </Col>
+
                     </Grid>
 
+                </View>
 
+                <Text style={styles.cardTitle}>Browse tutors</Text>
                 <ScrollView>
                     <View>
-                        <Text style={styles.cardTitle}>Browse tutors</Text>
-
-                            <List containerStyle={{borderWidth: 0, marginTop: 10, marginBottom: 30}}>
+                            <List containerStyle={{borderWidth: 0, marginTop: 10, marginBottom: 5}}>
                                 <ListItem
                                 leftIcon={{name: 'flask', type: 'font-awesome'}}
                                 title='Science'
