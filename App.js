@@ -9,6 +9,7 @@ import {Tutor_SignUp} from './src/components/Tutor/Tutor_SignUp';
 import {Profile} from "./src/components/Profile/Profile";
 import firebase from 'react-native-firebase';
 import {SignUp} from "./src/components/login/SignUp";
+import {TutorPage} from "./src/components/Tutor/TutorPage";
 
 /**
  * Navigation
@@ -30,13 +31,16 @@ const LoginStack = StackNavigator({
     });
 
 const DrawerStack = DrawerNavigator({
+    tutorPage: {screen: TutorPage},
     profile: {screen: Profile},
+
 });
 
 
 
 const DrawerNavigation = StackNavigator({
-    DrawerStack: {screen: DrawerStack}
+    DrawerStack:
+        {screen: DrawerStack}
 }, {
     headerMode: 'float',
     navigationOptions: ({navigation}) => ({

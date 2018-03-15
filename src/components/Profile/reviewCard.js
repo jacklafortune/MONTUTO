@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
-import { View, Image, StyleSheet, Text, KeyboardAvoidingView, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {Avatar, Divider} from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
+
+
+/**
+ * Component doesn't render a card!! Must nest component within a card to get desired render layout
+ *
+ * Props: name, timestamp, starCount
+ * Fed in through Profile component
+ */
 
 //FB SDK
 const FBSDK = require('react-native-fbsdk');
@@ -73,6 +81,4 @@ const styles = StyleSheet.create({
     reviewText: {
         marginTop: 7,
     }
-
-
 });

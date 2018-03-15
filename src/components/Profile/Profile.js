@@ -172,7 +172,10 @@ export class Profile extends Component {
                     </View>
                 </Card>
 
-                {/* Reviews */}
+                {/* Reviews
+
+
+                */}
                 <Card>
                     <Text style={styles.cardTitle}>Reviews</Text>
                     <View>
