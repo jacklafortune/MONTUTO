@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet} from 'react-native';
 import StarRating from 'react-native-star-rating';
+import { Rating} from 'react-native-elements';
 
 export class TutorCard extends Component {
     constructor(props){
@@ -10,28 +11,22 @@ export class TutorCard extends Component {
         return(
             <View>
                 <Image
-                    style={{width: 150, height: 150, borderRadius: 5}}
-                    source={{uri: 'https://picsum.photos/200'}}
+                    style={{width: 115, height: 115, borderRadius: 5}}
+                    source={{uri: 'https://source.unsplash.com/featured/?portrait'}}
                 />
-                <Text>{this.props.tutorName}</Text>
-                <Text>{this.props.subject}</Text>
-                <StarRating
-                    disabled={false}
-                    maxStars={5}
-                    rating={this.props.starCount}
-                    fullStarColor={'#e6e600'}
-                    starSize={15}
-                    fullStar={'ios-star'}
-                    halfStar={'ios-star-half'}
-                    emptyStar={'ios-star-outline'}
-                    iconSet={'Ionicons'}
-                />
-                <Text>{this.props.starCount}</Text>
+                <Text style={{fontSize: 18}}>{this.props.tutorName}</Text>
+                <Text style={{color: '#a6a6a6'}}>{this.props.subject}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <Rating
+                        type="star"
+                        ratingCount={5}
+                        startingValue={this.props.starValue}
+                        imageSize={16}
+                        ratingBackgroundColor="#a6a6a6s"
+                    />
+
+                </View>
             </View>
         )
     }
 }
-
-const styles = StyleSheet.create({
-
-});

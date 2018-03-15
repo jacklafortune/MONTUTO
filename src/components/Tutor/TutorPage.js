@@ -1,12 +1,16 @@
 import React, {Component} from 'react';
-import { View, Text, Image, StyleSheet} from 'react-native';
-import {Button, SearchBar, Icon} from 'react-native-elements';
+import { View, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {Button, SearchBar, Icon, Card, List, ListItem} from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import StarRating from 'react-native-star-rating';
 import {TutorCard} from "./TutorCard";
 
 
 export class TutorPage extends Component {
+
+    static navigationOptions = {
+        title: 'Tutors',
+    };
+
     constructor(props){
         super(props)
     }
@@ -19,7 +23,7 @@ export class TutorPage extends Component {
                 round
                 icon={{type: 'font-awesome', name: 'search'}}
                 placeholder='Search by name or skill'
-                containerStyle={{backgroundColor: '#fff', borderWidth: 0, marginBottom: 20}}
+                containerStyle={{backgroundColor: '#fff', borderTopWidth: 0, borderBottomWidth: 0, marginBottom: 10,}}
                 />
                     <View style={styles.row}>
                         <Icon
@@ -32,23 +36,65 @@ export class TutorPage extends Component {
                         />
                     </View>
                 {/* Tutor cards */}
-                <View>
+
                     <Grid>
                         <Col size={33}>
+                       <TutorCard
+                        tutorName='Max Maxwell'
+                        subject='Chemistry'
+                        starValue={4}
+                       />
+                        </Col>
+                        <Col size={33}>
                             <TutorCard
-                                tutorName='Adam Maxwell'
-                                subject='Chemistry'
-                                starCount={4}
+                                tutorName='Eleanor Nash'
+                                subject='Math'
+                                starValue={4.5}
                             />
                         </Col>
                         <Col size={33}>
-
-                        </Col>
-                        <Col size={33}>
-
+                            <TutorCard
+                                tutorName='Andy Ramel'
+                                subject='English'
+                                starValue={4.2}
+                            />
                         </Col>
                     </Grid>
-                </View>
+
+
+                <ScrollView>
+                    <View>
+                        <Text style={styles.cardTitle}>Browse tutors</Text>
+
+                            <List containerStyle={{borderWidth: 0, marginTop: 10, marginBottom: 30}}>
+                                <ListItem
+                                leftIcon={{name: 'flask', type: 'font-awesome'}}
+                                title='Science'
+                                />
+                                <ListItem
+                                    leftIcon={{name: 'calculator', type: 'font-awesome'}}
+                                    title='Math'
+                                />
+                                <ListItem
+                                    leftIcon={{name: 'pencil', type: 'font-awesome'}}
+                                    title='English'
+                                />
+                                <ListItem
+                                    leftIcon={{name: 'music', type: 'font-awesome'}}
+                                    title='Music'
+                                />
+                                <ListItem
+                                    leftIcon={{name: 'globe', type: 'font-awesome'}}
+                                    title='Geography'
+                                />
+                                <ListItem
+                                    leftIcon={{name: 'users', type: 'font-awesome'}}
+                                    title='Browse all'
+                                />
+                            </List>
+
+                      </View>
+                </ScrollView>
             </View>
         )
     }
@@ -57,11 +103,20 @@ export class TutorPage extends Component {
 const styles = StyleSheet.create({
    container: {
        flex: 1,
-       padding: 13,
+       flexDirection: 'column',
+       padding: 10,
        backgroundColor: '#fff',
+
    },
     row: {
        flexDirection: 'row',
-    }
+        marginBottom: 5,
+    },
+    cardTitle: {
+       marginTop: 10,
+        color: '#75BDE4',
+        fontWeight: 'bold',
+        fontSize: 17
+    },
 });
 

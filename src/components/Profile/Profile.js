@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
    container: {
        backgroundColor: '#fff',
        padding: 10,
-
        flex: 1,
        flexDirection: 'column'
    },
