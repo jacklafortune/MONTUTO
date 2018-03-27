@@ -33,6 +33,7 @@ export class Login_Info extends Component {
             pass: '',
             user: ''
         };
+
     }
 
     componentDidMount(){

@@ -84,9 +84,12 @@ const PrimaryNav = StackNavigator({
         },
         Tutor_SignUp: {
             screen: Tutor_SignUp,
+        },
+        tutor_page: {
+            screen: TutorPage
         }
     }, {
-        initialRouteName: 'Profile',
+        initialRouteName: 'tutor_page',
     },
 
 );
@@ -94,16 +97,16 @@ const PrimaryNav = StackNavigator({
 
 
 
-   /* export default class App extends React.Component{
+   export default class App extends React.Component{
 
  render(){
    return(
        <RootStack />
    )
  }
-} */
+}
 
-   export default class App extends React.Component {
+ /*  export default class App extends React.Component {
 
     constructor(){
         super();
@@ -139,4 +142,4 @@ const PrimaryNav = StackNavigator({
             return <LoginStack />
         }
     }
-}
+}*/

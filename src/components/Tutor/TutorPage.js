@@ -3,6 +3,14 @@ import { View, Text, Image, StyleSheet, ScrollView} from 'react-native';
 import {Button, SearchBar, Icon, Card, List, ListItem} from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {TutorCard} from "./TutorCard";
+import firebase from 'react-native-firebase';
+
+
+const tutorInfo = {
+    name: '',
+    field: '',
+    rating: 0,
+};
 
 
 export class TutorPage extends Component {
@@ -17,8 +25,41 @@ export class TutorPage extends Component {
     };
 
     constructor(props){
-        super(props)
+        super(props);
+
+        this.state = {
+            tutorLoaded: false,
+        }
+
     }
+
+    componentWillMount(){
+        /**
+         * Cloud firestore calls
+         * collections: hold groups of users (tutors/users)
+         * doc: name by full names, contains all user data
+         * */
+
+        let docRef = firebase.firestore().collection('tutors').doc('Alex Sagel');
+        docRef.get().then(function(doc) {
+           if (doc.exists){
+                console.log('doc data:', doc.data());
+
+               tutorInfo.name = doc.data().name;
+               tutorInfo.field = doc.data().field;
+               tutorInfo.rating = doc.data().rating;
+
+
+
+               this.setState({tutorLoaded: true});
+               console.log(tutorInfo.rating);
+           }
+        }.bind(this));
+
+
+    }
+
+
 
     render(){
         return(
@@ -45,29 +86,28 @@ export class TutorPage extends Component {
                     <Grid>
 
                         <Col size={33}>
-                       <TutorCard
-                        tutorName='Max Maxwell'
-                        subject='Chemistry'
-                        starValue={4}
-                       />
+                                <TutorCard
+                                    tutorName={tutorInfo}
+                                    subject={tutorInfo}
+                                    starValue={tutorInfo}
+                                />
                         </Col>
                         <Col size={33}>
-                            <TutorCard
+                            {/* <TutorCard
                                 tutorName='Eleanor Nash'
                                 subject='Math'
                                 starValue={4.5}
-                            />
+                            /> */}
                         </Col>
                         <Col size={33}>
-                            <TutorCard
+                            {/* <TutorCard
                                 tutorName='Andy Ramel'
                                 subject='English'
                                 starValue={4.2}
-                            />
+                            /> */}
                         </Col>
 
                     </Grid>
-
                 </View>
 
                 <Text style={styles.cardTitle}>Browse tutors</Text>
