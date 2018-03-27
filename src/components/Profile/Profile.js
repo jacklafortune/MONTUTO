@@ -111,6 +111,12 @@ export class Profile extends Component {
                                 />
                             </TouchableOpacity>
                         </View>
+                        <Button
+                            title='Sign out'
+                            rounded
+                            onPress={this.signOut}
+
+                        />
                     </Col>
                     <Col size={40}>
                         <Avatar
@@ -203,7 +209,7 @@ export class Profile extends Component {
     }
 
     signOut(){
-        firebase.auth().signOut().then(this.props.navigation.navigate('loginStack'));
+        firebase.auth().signOut().done();
     }
 
 }

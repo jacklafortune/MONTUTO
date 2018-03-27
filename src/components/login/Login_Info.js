@@ -159,10 +159,8 @@ export class Login_Info extends Component {
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass).then(
             user => {
                 console.log(user);
-
             }
-        ).then(this.props.navigation.navigate('Profile'));
-
+        ).done();
         console.log('logged in')
     }
 

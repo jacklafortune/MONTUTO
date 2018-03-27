@@ -22,17 +22,18 @@ const LoginStack = StackNavigator({
         login_info: {screen: Login_Info},
         signUp: {screen: SignUp},
         tutorSignUp: {screen: Tutor_SignUp},
-        profile: {screen: Profile}
+        //profile: {screen: Profile}
 
     },
     {
 
-        // initialRouteName: 'signUp',
+         initialRouteName: 'login_info',
     });
 
 const DrawerStack = DrawerNavigator({
-    tutorPage: {screen: TutorPage},
     profile: {screen: Profile},
+    tutorPage: {screen: TutorPage},
+
 
 
 });
@@ -93,23 +94,21 @@ const PrimaryNav = StackNavigator({
 
 
 
-   export default class App extends React.Component{
+   /* export default class App extends React.Component{
 
  render(){
    return(
        <RootStack />
    )
  }
-}
+} */
 
-  /* export default class App extends React.Component {
+   export default class App extends React.Component {
 
     constructor(){
         super();
-
         this.state = {
             loading: true,
-
         };
     }
 
@@ -135,9 +134,9 @@ const PrimaryNav = StackNavigator({
           if (this.state.loading){
             return null;
         }  if (this.state.user){
-            return <PrimaryNav />;
+            return <DrawerNavigation />;
         } else {
             return <LoginStack />
         }
     }
-} */
+}
