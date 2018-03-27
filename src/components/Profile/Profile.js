@@ -36,14 +36,14 @@ export class Profile extends Component {
     componentDidMount(){
         console.disableYellowBox = true;
         const infoRequest = new GraphRequest(
-            '/me?fields=name,picture?',
+            '/me?fields=name,picture',
             null,
             this._responseInfoCallback
         );
 
         new GraphRequestManager().addRequest(infoRequest).start();
 
-        this.googleUserData();
+        this.googleUserData()
     }
 
     constructor(props) {
@@ -117,7 +117,7 @@ export class Profile extends Component {
                             xlarge
                             rounded
                             source={{uri:this.state.pic}}
-                            containerStyle={{marginRight: 5, marginTop: 10}}
+                            containerStyle={{marginRight: 5, marginTop: 10,}}
                         />
                     </Col>
                 </Grid>
@@ -188,11 +188,18 @@ export class Profile extends Component {
 
     //Firebase Google User data fetch
     googleUserData(){
-        let user = firebase.auth().currentUser;
+        firebase.auth().onAuthStateChanged(function(user) {
+         user = firebase.auth().currentUser;
         if (user != null){
             this.setState({name: user.displayName, pic: user.photoURL});
-            console.log('grabbed google data!')
+            console.log('grabbed google data!');
+            console.log(user);
+        } else {
+            console.log('Google auth error');
+            user = firebase.auth().currentUser;
+            console.log(user);
         }
+        }.bind(this));
     }
 
     signOut(){

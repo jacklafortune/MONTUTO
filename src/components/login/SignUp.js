@@ -8,6 +8,7 @@ export class SignUp extends Component {
 
 
     //From validation logic
+    //TODO: Submit needs to be triggered 2X to submit & validation triggers when all = true
     handleSubmit = () => {
 
         if (this.state.name.length > 1){
@@ -54,17 +55,14 @@ export class SignUp extends Component {
         if (this.state.nameCheck && this.state.passCheck && this.state.emailCheck && this.state.passConfirmCheck === true){
             //All Good!
             firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass).done();
-
-
-            //Todo: fix updateProfile bug
-            this.authSubscription =
                 firebase.auth().onAuthStateChanged((user) => {
                     user = firebase.auth().currentUser;
                     user.updateProfile({
                         displayName: this.state.name
-                    }).done()
+                    }).then(
+                        this.props.navigation.navigate('Profile')
+                    )
                 });
-            this.props.navigation.navigate('drawerStack')
         }
 
 
@@ -170,7 +168,6 @@ export class SignUp extends Component {
                     large
                     rounded
                     onPress={this.handleSubmit}
-
                 />
 
             </View>

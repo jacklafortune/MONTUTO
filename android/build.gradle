@@ -12,6 +12,8 @@ buildscript {
     }
 }
 
+def googlePlayServicesVersion = '11.8.0'
+
 allprojects {
     repositories {
         mavenLocal()
@@ -28,6 +30,8 @@ allprojects {
         configurations.all {
             resolutionStrategy {
                 force 'com.facebook.android:facebook-android-sdk:4.28.0'
+                // react-native-google-sign-in
+                force "com.google.android.gms:play-services-auth:$googlePlayServicesVersion"
             }
         }
     }

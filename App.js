@@ -78,11 +78,14 @@ const PrimaryNav = StackNavigator({
         Profile: {
             screen: Profile,
         },
+        signUp: {
+            screen: SignUp,
+        },
         Tutor_SignUp: {
             screen: Tutor_SignUp,
         }
     }, {
-        initialRouteName: 'home_Login',
+        initialRouteName: 'Profile',
     },
 
 );
@@ -94,7 +97,7 @@ const PrimaryNav = StackNavigator({
 
  render(){
    return(
-       <DrawerNavigation />
+       <RootStack />
    )
  }
 }

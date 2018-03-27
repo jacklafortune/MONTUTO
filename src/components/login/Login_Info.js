@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet} from 'react-native';
-import { FormInput, Button } from 'react-native-elements';
+import { FormInput, Button, FormLabel } from 'react-native-elements';
 import { GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
 
@@ -51,11 +51,13 @@ export class Login_Info extends Component {
                 </View>
 
                 <View style={styles.formGroup}>
+                    <FormLabel>Email</FormLabel>
                     <FormInput onChangeText={(email) => this.setState({email: email})}
                                value={this.state.email}
                                placeholder="Your email"
+                               la
                     />
-
+                    <FormLabel>Password</FormLabel>
                     <FormInput onChangeText={(pass) => this.setState({pass: pass})}
                                value={this.state.pass}
                                placeholder="Password"
@@ -68,6 +70,7 @@ export class Login_Info extends Component {
                 </View>
 
                 <View style={styles.btn_group}>
+                    <View style={{marginBottom: 10}}>
                      <LoginButton
                         readPermissions={["public_profile email"]}
                         onLoginFinished={
@@ -90,10 +93,11 @@ export class Login_Info extends Component {
                         }
                         onLogoutFinished={() => alert("User logged out")}
                     />
+                    </View>
 
                     <GoogleSigninButton
                         style={{width: 230, height: 48}}
-                        size={GoogleSigninButton.Size.Standard}
+                        size={GoogleSigninButton.Size.large}
                         color={GoogleSigninButton.Color.Light}
                         onPress={() => {this._signIn()}}
                     />
@@ -140,8 +144,7 @@ export class Login_Info extends Component {
                 const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken);
                 return firebase.auth().signInAndRetrieveDataWithCredential(credential);
 
-            })
-            .done().then(this.props.navigation.navigate('drawerStack'));
+            }).then(this.props.navigation.navigate('Profile'));
     }
 
     _signOut(){
@@ -152,15 +155,14 @@ export class Login_Info extends Component {
     }
 
     //Firebase email & pass signIn
-    //Todo: fix weird redirect after successful log in
     firebaseSignIn = () => {
         firebase.auth().signInAndRetrieveDataWithEmailAndPassword(this.state.email, this.state.pass).then(
             user => {
                 console.log(user);
 
             }
-        ).done();
-        this.props.navigation.navigate('profile');
+        ).then(this.props.navigation.navigate('Profile'));
+
         console.log('logged in')
     }
 
@@ -191,8 +193,9 @@ const styles = StyleSheet.create({
        justifyContent: 'center',
     },
     btn_group: {
-       flexDirection:'row',
+     //  flexDirection:'row',
        justifyContent: 'center',
+        alignItems: 'center',
         marginBottom: 20,
     },
 });
