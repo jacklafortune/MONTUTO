@@ -8,16 +8,9 @@ import StarRating from 'react-native-star-rating';
 /**
  * Component doesn't render a card!! Must nest component within a card to get desired render layout
  *
- * Props: name, timestamp, starCount
+ * Props: name, timestamp, rating
  * Fed in through Profile component
  */
-
-//FB SDK
-const FBSDK = require('react-native-fbsdk');
-const {
-    GraphRequest,
-    GraphRequestManager,
-} = FBSDK;
 
 export default class ReviewCard extends Component {
     constructor(props){

@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Picker } from 'react-native';
-import {FormLabel, FormInput, Button} from 'react-native-elements';
+import {FormLabel, FormInput, Button, SocialIcon} from 'react-native-elements';
 import { StackNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
+
+let newAvail = [];
 
 export class Tutor_SignUp extends Component {
 
@@ -16,7 +18,7 @@ export class Tutor_SignUp extends Component {
         this.state = {
             name: '',
             field: '',
-            skills: [],
+            skills: '',
             about: '',
             availability: [],
         };
@@ -24,27 +26,59 @@ export class Tutor_SignUp extends Component {
         this.ref = firebase.firestore().collection('tutors');
     }
 
+    //TODO: Bug: doesn't set index 0 in state
+    availSelect(index){
+       switch (index){
+           case 0:
+               newAvail.push('monday');
+               break;
+           case 1:
+               newAvail.push('tuesday');
+               break;
+           case 2:
+               newAvail.push('wednesday');
+               break;
+           case 3:
+               newAvail.push('thursday');
+               break;
+           case 4:
+               newAvail.push('Friday');
+       }
+       console.log(newAvail);
+
+       console.log('state:' + this.state.availability);
+    }
+
+
+
     tutorSubmit = () => {
+        this.setState({availability: newAvail});
+
         this.ref.doc(this.state.name).set({
             name: this.state.name,
+            skills: this.state.skills,
             field: this.state.field,
             about: this.state.about,
+            availability: this.state.availability,
             rating: 0,
+            ratingCount: 0,
         }).then(
             console.log('doc written to success!')
         ).catch(
             console.log('error writing to doc')
         );
 
-      console.log(this.state.field);
+       console.log(this.state.availability);
 
         this.setState({
             name: '',
             field: '',
-            skills: [],
+            skills: '',
             about: '',
             availability: [],
-        })
+        });
+
+        newAvail = newAvail[''];
     };
 
 
@@ -57,6 +91,12 @@ export class Tutor_SignUp extends Component {
                         onChangeText={(name) => this.setState({name: name})}
                         placeholder='Enter your full name'
                         value={this.state.name}
+                    />
+                    <FormLabel>Skills</FormLabel>
+                    <FormInput
+                        onChangeText={(skills) => this.setState({skills: skills})}
+                        placeholder='Enter some of your skills'
+                        value={this.state.skills}
                     />
 
 
@@ -81,6 +121,36 @@ export class Tutor_SignUp extends Component {
                         multiline={true}
                         numberOfLines={4}
                     />
+
+                    <FormLabel>Availability</FormLabel>
+                    <View style={styles.btn_container}>
+                        <Button
+                            title='Mon'
+                            onPress={() => this.availSelect(0)}
+                            buttonStyle={{width: 50, height: 50, marginRight: 0}}
+                        />
+                        <Button
+                            title='Tue'
+                            onPress={() => this.availSelect(1)}
+                            buttonStyle={{width: 50, height: 50}}
+                        />
+                        <Button
+                            title='Wed'
+                            onPress={() => this.availSelect(2)}
+                            buttonStyle={{width: 50, height: 50}}
+                        />
+                        <Button
+                            title='Thu'
+                            onPress={() => this.availSelect(3)}
+                            buttonStyle={{width: 50, height: 50}}
+                        />
+                        <Button
+                            title='Fri'
+                            onPress={() =>this.availSelect(4)}
+                            buttonStyle={{width: 50, height: 50}}
+                        />
+                    </View>
+
                 <Button
                     rounded
                     title='Done!'
@@ -98,5 +168,9 @@ const styles = StyleSheet.create({
        padding: 15,
        backgroundColor: '#fff',
        flex: 1,
-   }
+   },
+    btn_container: {
+       flexDirection: 'row',
+        margin: 10,
+    }
 });

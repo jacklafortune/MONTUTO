@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import { View, Text, Image, StyleSheet, ScrollView, TouchableHighlight} from 'react-native';
 import {Button, SearchBar, Icon, Card, List, ListItem} from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import {TutorCard} from "./TutorCard";
@@ -52,7 +52,7 @@ export class TutorPage extends Component {
 
 
                this.setState({tutorLoaded: true});
-               console.log(tutorInfo.rating);
+              // console.log(tutorInfo.rating);
            }
         }.bind(this));
 
@@ -86,11 +86,13 @@ export class TutorPage extends Component {
                     <Grid>
 
                         <Col size={33}>
+                            <TouchableHighlight onPress={() => this.props.navigation.navigate('Profile')}>
                                 <TutorCard
                                     tutorName={tutorInfo}
                                     subject={tutorInfo}
                                     starValue={tutorInfo}
                                 />
+                            </TouchableHighlight>
                         </Col>
                         <Col size={33}>
                             {/* <TutorCard

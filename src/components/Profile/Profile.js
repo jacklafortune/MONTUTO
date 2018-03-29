@@ -14,6 +14,8 @@ const {
     GraphRequestManager,
 } = FBSDK;
 
+
+
 export class Profile extends Component {
 
 
@@ -25,16 +27,35 @@ export class Profile extends Component {
   * - Permissions are requested in Login_Info.js inside LoginButton readPermissions array
   */
 
-    _responseInfoCallback = (error, result) => {
+   /* _responseInfoCallback = (error, result) => {
         if (error) {
             console.log("FB SDK error  " + error.toString());
         } else {
             this.setState({name: result.name, pic: result.picture.data.url});
         }
-    };
+    }; */
 
-    componentDidMount(){
-        console.disableYellowBox = true;
+    componentWillMount(){
+        /**
+         * Cloud Firestore calls to fetch tutor data
+         */
+        let docRef = firebase.firestore().collection('tutors').doc('Alex Sagel');
+        docRef.get().then(function(doc){
+            if (doc.exists){
+                this.setState({
+                    name: doc.data().name,
+                    field: doc.data().field,
+                    about: doc.data().about,
+                    skills: doc.data().skills,
+                    rating: doc.data().rating,
+                    availability: doc.data().availability,
+                })
+            }
+        }.bind(this))
+
+
+
+      /*  console.disableYellowBox = true;
         const infoRequest = new GraphRequest(
             '/me?fields=name,picture',
             null,
@@ -43,14 +64,19 @@ export class Profile extends Component {
 
         new GraphRequestManager().addRequest(infoRequest).start();
 
-        this.googleUserData()
+        this.googleUserData() */
     }
 
     constructor(props) {
         super(props);
         this.state = {
-            starCount: 4,
+            rating: 0,
             name:'',
+            field: '',
+            skills: '',
+            about: '',
+            availability: [],
+
             pic: '',
             ratingCount: 23
         };
@@ -58,7 +84,7 @@ export class Profile extends Component {
 
 
     static navigationOptions = {
-      drawerLabel: 'Profile',
+      drawerLabel: 'Find Tutor',
     };
 
 
@@ -72,13 +98,13 @@ export class Profile extends Component {
                     <Col size={60}>
                         <View style={{marginLeft: 15}}>
                             <Text style={styles.name}>{this.state.name}</Text>
-                            <Text style={{color: '#bdbdbd', marginLeft: 3, fontSize: 15}}>Computer Science tutor</Text>
+                            <Text style={{color: '#bdbdbd', marginLeft: 3, fontSize: 15}}>{this.state.field}</Text>
 
                             <View style={styles.starContainer}>
                                 <Rating
                                     type="star"
                                     ratingCount={5}
-                                    startingValue={this.state.starCount}
+                                    startingValue={this.state.rating}
                                     imageSize={25}
                                     ratingBackgroundColor="#a6a6a6s"
                                     readonly
@@ -92,6 +118,7 @@ export class Profile extends Component {
                                 icon={{name: 'message'}}
                                 rounded
                                 backgroundColor="#2B98F0"
+                                onPress={() => this.props.navigation.navigate('tutorContact')}
                             />
                             <TouchableOpacity
                                 style={{
@@ -111,12 +138,6 @@ export class Profile extends Component {
                                 />
                             </TouchableOpacity>
                         </View>
-                        <Button
-                            title='Sign out'
-                            rounded
-                            onPress={this.signOut}
-
-                        />
                     </Col>
                     <Col size={40}>
                         <Avatar
@@ -134,7 +155,7 @@ export class Profile extends Component {
                        Skills
                     </Text>
                     <Text style={styles.cardText}>
-                        Data structures & algorithms, Java, C, Linear Algebra
+                        {this.state.skills}
                     </Text>
                 </Card>
 
@@ -144,9 +165,7 @@ export class Profile extends Component {
                         About me
                     </Text>
                     <Text style={styles.cardText}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore magna aliqua. Viverra maecenas accumsan lacus vel facilisis.
-                        Ullamcorper a lacus vestibulum sed.
+                        {this.state.about}
                     </Text>
                 </Card>
 
@@ -193,7 +212,7 @@ export class Profile extends Component {
     }
 
     //Firebase Google User data fetch
-    googleUserData(){
+  /*  googleUserData(){
         firebase.auth().onAuthStateChanged(function(user) {
          user = firebase.auth().currentUser;
         if (user != null){
@@ -211,6 +230,7 @@ export class Profile extends Component {
     signOut(){
         firebase.auth().signOut().done();
     }
+    */
 
 }
 

@@ -10,6 +10,7 @@ import {Profile} from "./src/components/Profile/Profile";
 import firebase from 'react-native-firebase';
 import {SignUp} from "./src/components/login/SignUp";
 import {TutorPage} from "./src/components/Tutor/TutorPage";
+import {tutorContact} from './src/components/Tutor/tutorContact';
 
 /**
  * Navigation
@@ -82,14 +83,17 @@ const PrimaryNav = StackNavigator({
         signUp: {
             screen: SignUp,
         },
-        Tutor_SignUp: {
+        tutor_SignUp: {
             screen: Tutor_SignUp,
         },
         tutor_page: {
-            screen: TutorPage
+            screen: TutorPage,
+        },
+        tutorContact: {
+            screen: tutorContact
         }
     }, {
-        initialRouteName: 'tutor_page',
+        initialRouteName: 'Profile',
     },
 
 );

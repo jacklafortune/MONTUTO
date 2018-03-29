@@ -13,7 +13,7 @@ export class TutorCard extends Component {
 
     componentDidUpdate(){
         rating = this.props.starValue.rating;
-        console.log(this.props.starValue.rating);
+      //  console.log(this.props.starValue.rating);
     }
 
     //TODO: Rating is rendering wrong starting value. But rating is logging right amount
