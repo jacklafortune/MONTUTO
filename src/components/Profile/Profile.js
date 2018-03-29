@@ -3,7 +3,6 @@ import { View, Image, StyleSheet, KeyboardAvoidingView, TouchableOpacity, Scroll
 import { Button, Text, Avatar, Card, Icon, Rating } from 'react-native-elements';
 import {StackNavigator, DrawerNavigator} from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import StarRating from 'react-native-star-rating';
 import firebase from 'react-native-firebase';
 import ReviewCard from '../Profile/reviewCard'
 
@@ -15,8 +14,21 @@ const {
 } = FBSDK;
 
 
+/**
+ *
+ * @type {{name: string, field: string, rating: number, availability: Array}}
+ * Params to be passed through StackNavigator to fill tutorContact.js fields
+ */
+const tutorInfo = {
+    name: '',
+    field: '',
+    rating: 0,
+    availability: [],
+};
 
 export class Profile extends Component {
+
+
 
 
 
@@ -49,7 +61,12 @@ export class Profile extends Component {
                     skills: doc.data().skills,
                     rating: doc.data().rating,
                     availability: doc.data().availability,
-                })
+                });
+
+                tutorInfo.name = this.state.name;
+                tutorInfo.field = this.state.field;
+                tutorInfo.rating = this.state.rating;
+                tutorInfo.availability = this.state.availability;
             }
         }.bind(this))
 
@@ -118,7 +135,12 @@ export class Profile extends Component {
                                 icon={{name: 'message'}}
                                 rounded
                                 backgroundColor="#2B98F0"
-                                onPress={() => this.props.navigation.navigate('tutorContact')}
+                                onPress={() => this.props.navigation.navigate('tutorContact', {
+                                  tutorName: tutorInfo.name,
+                                  tutorField: tutorInfo.field,
+                                  tutorRating: tutorInfo.rating,
+                                  tutorAvail: tutorInfo.availability
+                                })}
                             />
                             <TouchableOpacity
                                 style={{

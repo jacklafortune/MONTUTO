@@ -99,7 +99,7 @@ const PrimaryNav = StackNavigator({
 );
 
 
-
+//TODO: Reduce API calls by passing props through navigation throughout app.
 
    export default class App extends React.Component{
 

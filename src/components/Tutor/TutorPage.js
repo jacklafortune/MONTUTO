@@ -10,6 +10,7 @@ const tutorInfo = {
     name: '',
     field: '',
     rating: 0,
+
 };
 
 
@@ -48,6 +49,7 @@ export class TutorPage extends Component {
                tutorInfo.name = doc.data().name;
                tutorInfo.field = doc.data().field;
                tutorInfo.rating = doc.data().rating;
+
 
 
 

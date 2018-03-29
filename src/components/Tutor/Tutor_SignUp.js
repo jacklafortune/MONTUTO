@@ -26,7 +26,6 @@ export class Tutor_SignUp extends Component {
         this.ref = firebase.firestore().collection('tutors');
     }
 
-    //TODO: Bug: doesn't set index 0 in state
     availSelect(index){
        switch (index){
            case 0:
@@ -45,16 +44,18 @@ export class Tutor_SignUp extends Component {
                newAvail.push('Friday');
        }
        console.log(newAvail);
-
+       this.setState({availability: newAvail});
        console.log('state:' + this.state.availability);
     }
 
 
-
+    /**
+     * Sets firestore doc to name of tutor & populates doc with fields
+     */
     tutorSubmit = () => {
-        this.setState({availability: newAvail});
 
-        this.ref.doc(this.state.name).set({
+
+       this.ref.doc(this.state.name).set({
             name: this.state.name,
             skills: this.state.skills,
             field: this.state.field,
@@ -62,6 +63,16 @@ export class Tutor_SignUp extends Component {
             availability: this.state.availability,
             rating: 0,
             ratingCount: 0,
+            city: '',
+            sessions: {
+                upcoming: {
+                  date: '',
+                  clientName: '',
+                  info: '',
+                },
+                    past: ''
+            }
+
         }).then(
             console.log('doc written to success!')
         ).catch(
@@ -79,9 +90,12 @@ export class Tutor_SignUp extends Component {
         });
 
         newAvail = newAvail[''];
+        this.props.navigation.navigate('tutor_page');
     };
 
 
+
+    //TODO: Field picker doesn't load first item into state
     render (){
         return(
             <View style={styles.container}>
