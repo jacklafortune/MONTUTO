@@ -54,7 +54,6 @@ export class tutorContact extends Component {
                     />
                     <FormLabel>Select a date</FormLabel>
                 </View>
-
             </View>
         )
     }
@@ -77,5 +76,6 @@ const styles = StyleSheet.create({
     },
     formWrap: {
 
-    }
+    },
+
 });

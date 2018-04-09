@@ -1,10 +1,20 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Picker } from 'react-native';
+import { StyleSheet, Text, View, Picker, ScrollView } from 'react-native';
 import {FormLabel, FormInput, Button, SocialIcon} from 'react-native-elements';
 import { StackNavigator } from 'react-navigation';
 import firebase from 'react-native-firebase';
+import {Calendar} from 'react-native-calendars';
 
 let newAvail = [];
+let timeSelectState = {
+  noPress: {
+      text: 'Add time',
+      style: {textDecorationLine: 'underline', color: 'white', marginLeft: 20}
+  },
+  onPress: {
+        text: ''
+  }
+};
 
 export class Tutor_SignUp extends Component {
 
@@ -22,7 +32,6 @@ export class Tutor_SignUp extends Component {
             about: '',
             availability: [],
         };
-
         this.ref = firebase.firestore().collection('tutors');
     }
 
@@ -50,11 +59,9 @@ export class Tutor_SignUp extends Component {
 
 
     /**
-     * Sets firestore doc to name of tutor & populates doc with fields
+     * Creates firestore doc with name of tutor & populates doc with fields
      */
     tutorSubmit = () => {
-
-
        this.ref.doc(this.state.name).set({
             name: this.state.name,
             skills: this.state.skills,
@@ -98,6 +105,7 @@ export class Tutor_SignUp extends Component {
     //TODO: Field picker doesn't load first item into state
     render (){
         return(
+            <ScrollView>
             <View style={styles.container}>
                 <View>
                     <FormLabel>Name</FormLabel>
@@ -137,7 +145,7 @@ export class Tutor_SignUp extends Component {
                     />
 
                     <FormLabel>Availability</FormLabel>
-                    <View style={styles.btn_container}>
+                    {/*  <View style={styles.btn_container}>
                         <Button
                             title='Mon'
                             onPress={() => this.availSelect(0)}
@@ -163,7 +171,20 @@ export class Tutor_SignUp extends Component {
                             onPress={() =>this.availSelect(4)}
                             buttonStyle={{width: 50, height: 50}}
                         />
+                    </View> */}
+                    <View>
+                        <Calendar
+                            onDayPress={(day) => {console.log('selected day: ', day)}}
+                            showWeekNumbers={false}
+
+                        />
+                        <View style={styles.calendarTime}>
+
+                            <Text style={timeSelectState.noPress.style}>{timeSelectState.noPress.text}</Text>
+                        </View>
                     </View>
+
+
 
                 <Button
                     rounded
@@ -173,6 +194,7 @@ export class Tutor_SignUp extends Component {
                 />
                 </View>
             </View>
+            </ScrollView>
         )
     }
 }
@@ -186,5 +208,13 @@ const styles = StyleSheet.create({
     btn_container: {
        flexDirection: 'row',
         margin: 10,
-    }
+    },
+    calendarView:{
+
+    },
+    calendarTime: {
+      backgroundColor: '#ADD8E6',
+      height: 25,
+      marginBottom: 25,
+    },
 });

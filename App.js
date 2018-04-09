@@ -93,7 +93,7 @@ const PrimaryNav = StackNavigator({
             screen: tutorContact
         }
     }, {
-        initialRouteName: 'Profile',
+        initialRouteName: 'tutor_SignUp',
     },
 
 );
